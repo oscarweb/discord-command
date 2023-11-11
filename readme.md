@@ -19,10 +19,10 @@ npm install @oscarweb/discord-command
 ## Example
 ```js
 // bot.js
-import { DiscordCommand } from 'discord-command';
+import { DiscordCommand } from '@oscarweb/discord-command';
 
 // Custom Commands
-import Commands from './custom-commands';
+import Commands from './custom-commands/index.js';
 
 new DiscordCommand('...TOKEN.DISCORD...', Commands).init();
 ```
@@ -49,7 +49,7 @@ export default Commands;
 Get methods defined if you extend your class
 ```js
 // custom-commands/MyCommand.js
-import { Command } from 'discord-command';
+import { Command } from '@oscarweb/discord-command';
 
 class MyCommand extends Command{
 	/**
