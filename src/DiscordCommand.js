@@ -1,0 +1,80 @@
+import Discord from 'discord.js';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const pkg = require('../package.json');
+
+/**
+ * Discord Command
+ * -
+ */
+class DiscordCommand{
+	token = null;
+	commands = [];
+	bot = null;
+
+	/**
+	 * DiscordCommand Construct
+	 * -
+	 * @param {token} string
+	 */
+	constructor(token, commands){
+		this.token = (typeof token === 'undefined')? null : token;
+		this.commands = (typeof commands === 'undefined')? [] : commands;
+		
+		this.bot = new Discord.Client();
+	}
+
+	/**
+	 * Initialize Discord - discord.js
+	 * -
+	 */
+	init(){
+		this.bot.once('ready', () => {
+			this.ready();
+		});
+
+		this.bot.on('message', async message => {
+			if(message.author.bot){
+				return;
+			}
+
+			this.log(message);
+
+			for(let command of this.commands){
+				if(message.content.startsWith(command.name)){
+					('method' in command)? new command.class(message)[command.method](message) : new command.class(message).run();
+					return;
+					break;
+				}
+			}
+		});
+
+		this.bot.login(this.token);
+	}
+
+	/**
+	 * Print ready
+	 * -
+	 */
+	ready(){
+		console.clear();
+		console.log(`\x1b[32m
+ ____  _                   _    _____                           _ 
+|    \\|_|___ ___ ___ ___ _| |  |     |___ _____ _____ ___ ___ _| |
+|  |  | |_ -|  _| . |  _| . |  |   --| . |     |     | .'|   | . |
+|____/|_|___|___|___|_| |___|  |_____|___|_|_|_|_|_|_|__,|_|_|___|\x1b[0m`);
+
+		console.log('\n\x1b[44m Discord Command ~ '+pkg.name+' v'+pkg.version+' \x1b[0m\n');
+	}
+
+	/**
+	 * Log messages
+	 * -
+	 */
+	log(message){
+		let date = new Date;
+		console.log(((message.channel.type == 'dm')? '\x1b[90m[ • ]': '\x1b[90m[ # ]')+' '+date.toLocaleString('es-ES')+'\x1b[0m \x1b[32m<'+message.author.username+'>\x1b[0m: '+message.content);
+	}
+}
+
+export default DiscordCommand;

@@ -1,0 +1,27 @@
+{
+  "name": "@oscarweb/discord-command",
+  "version": "0.1.0",
+  "description": "Simply add your custom commands to your Discord Bot.",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oscar S.C. <hi@oscarweb.ar> (https://oscarweb.ar)",
+  "license": "ISC",
+  "keywords": [
+    "discord",
+    "discord.js",
+    "discord-command",
+    "commands"
+  ],
+  "homepage": "https://github.com/oscarweb/discord-command#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oscarweb/discord-command.git"
+  },    
+  "dependencies": {
+    "discord.js": "^11.4.2"
+  },
+  "devDependencies": {}
+}
