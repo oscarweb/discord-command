@@ -4,6 +4,7 @@
  */
 class Command{
 	message = null;
+	params = [];
 
 	/**
 	 * Command Construct
@@ -12,6 +13,7 @@ class Command{
 	 */
 	constructor(message){
 		this.message = message
+		this.getParams();
 	}
 
 	/**
@@ -85,6 +87,37 @@ class Command{
 	isBot(){
 		return this.message.author.bot;
 	}
+
+	/**
+	 * Get param
+	 * -
+	 * @param {Integer} key
+	 * @returns {String}
+	 */
+	getParam(key){
+		if(this.params.length > 0){
+			return this.params[key];
+		}
+		return '';
+	}
+
+	/**
+	 * Create Params
+	 * -
+	 * @returns {Array}
+	 */
+    getParams(){
+        if(this.message.content.indexOf(' ') > 0){
+            let s = this.message.content.split(' ');
+            for(let i=0;i<s.length;i++){
+                if(i > 0){
+                    this.params.push(s[i]);
+                }
+            }
+        }
+
+        return [];
+    }	
 }
 
 export default Command;
