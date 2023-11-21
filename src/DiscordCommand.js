@@ -51,7 +51,7 @@ class DiscordCommand{
 			}
 
 			for(let observer of this.observers){
-				if(observer.channel == message.channel.name){
+				if(observer.channel.replace('#', '') == message.channel.name){
 					new observer.class(message).run();
 				}
 			}
