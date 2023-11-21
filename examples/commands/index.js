@@ -6,7 +6,7 @@ const Commands = [
 		class: MyCommand,
 	},
 	{
-		name: '!hi',
+		name: '!hi|!hello',
 		class: MyCommand,
 		method : 'hi'
 	}

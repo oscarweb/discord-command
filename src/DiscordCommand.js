@@ -40,8 +40,8 @@ class DiscordCommand{
 
 			this.log(message);
 
-			for(let command of this.commands){
-				if(message.content.startsWith(command.name)){
+			for(let command of this.commands){				
+				if(this.checkCommand(message.content, command.name)){
 					('method' in command)? new command.class(message)[command.method](message) : new command.class(message).run();
 					return;
 					break;
@@ -50,6 +50,42 @@ class DiscordCommand{
 		});
 
 		this.bot.login(this.token);
+	}
+
+	/**
+	 * Check exist command
+	 * -
+	 * @params {String} content
+	 * @params {String} command
+	 * @returns {Bolean}
+	 */
+	checkCommand(content, command){
+		if(command.indexOf('|') > 0){
+			for(let name of command.split('|')){
+				if(this.checkStartsWith(content, name)){
+					return true;
+					break;
+				}
+			}
+		}
+		else{
+			if(this.checkStartsWith(content, command)){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if starts with command
+	 * -
+	 * @params {String} content
+	 * @params {String} command
+	 * @returns {Bolean}
+	 */
+	checkStartsWith(content, command){
+		return content.startsWith(command);
 	}
 
 	/**
