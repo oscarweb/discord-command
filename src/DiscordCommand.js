@@ -10,6 +10,7 @@ const pkg = require('../package.json');
 class DiscordCommand{
 	token = null;
 	commands = [];
+	observers = [];
 	bot = null;
 
 	/**
@@ -17,9 +18,10 @@ class DiscordCommand{
 	 * -
 	 * @param {token} string
 	 */
-	constructor(token, commands){
+	constructor(token, commands, observers){
 		this.token = (typeof token === 'undefined')? null : token;
 		this.commands = (typeof commands === 'undefined')? [] : commands;
+		this.observers = (typeof observers === 'undefined')? [] : observers;
 		
 		this.bot = new Discord.Client();
 	}
@@ -45,6 +47,12 @@ class DiscordCommand{
 					('method' in command)? new command.class(message)[command.method]() : new command.class(message).run();
 					return;
 					break;
+				}
+			}
+
+			for(let observer of this.observers){
+				if(observer.channel == message.channel.name){
+					new observer.class(message).run();
 				}
 			}
 		});
