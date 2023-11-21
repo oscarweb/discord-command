@@ -42,7 +42,7 @@ class DiscordCommand{
 
 			for(let command of this.commands){				
 				if(this.checkCommand(message.content, command.name)){
-					('method' in command)? new command.class(message)[command.method](message) : new command.class(message).run();
+					('method' in command)? new command.class(message)[command.method]() : new command.class(message).run();
 					return;
 					break;
 				}
