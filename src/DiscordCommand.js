@@ -12,6 +12,7 @@ class DiscordCommand{
 	commands = [];
 	observers = [];
 	bot = null;
+	readBots = false;
 
 	/**
 	 * DiscordCommand Construct
@@ -36,7 +37,7 @@ class DiscordCommand{
 		});
 
 		this.bot.on('message', async message => {
-			if(message.author.bot){
+			if(message.author.bot && !this.readBots){
 				return;
 			}
 
@@ -58,6 +59,14 @@ class DiscordCommand{
 		});
 
 		this.bot.login(this.token);
+	}
+
+	/**
+	 * Set read bots
+	 * -
+	 */
+	readBots(){
+		this.readBots = true;
 	}
 
 	/**
