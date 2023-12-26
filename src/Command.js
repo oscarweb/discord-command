@@ -30,7 +30,11 @@ class Command{
 	 * -
 	 * @param {String} text
 	 */
-	send(text){
+	send(text, params){
+		if(typeof params === 'undefined'){
+			params = { split : true };
+		}
+
 		this.message.channel.send(text);
 	}
 
