@@ -35,7 +35,7 @@ class Command{
 			params = { split : true };
 		}
 
-		this.message.channel.send(text);
+		this.message.channel.send(text, params);
 	}
 
 	/**
