@@ -11,8 +11,9 @@ class Command{
 	 * -
 	 * @param {Object} message
 	 */
-	constructor(message){
+	constructor(message, client){
 		this.message = message
+		this.client = client;
 		this.getParams();
 	}
 

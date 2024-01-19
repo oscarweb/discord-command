@@ -6,9 +6,10 @@ class MyCommand extends Command{
 	 * -
 	 * @param {Object} message
 	 */
-	// constructor(message){
+	// constructor(message, client){
 	// 	super(message); // parent constructor
 
+	//	this.client = client;
 	// 	this.custom_var = message.content.split(' ');
 	// }
 

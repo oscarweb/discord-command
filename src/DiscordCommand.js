@@ -11,7 +11,7 @@ class DiscordCommand{
 	token = null;
 	commands = [];
 	observers = [];
-	bot = null;
+	client = null;
 	readBots = false;
 
 	/**
@@ -24,7 +24,7 @@ class DiscordCommand{
 		this.commands = (typeof commands === 'undefined')? [] : commands;
 		this.observers = (typeof observers === 'undefined')? [] : observers;
 		
-		this.bot = new Discord.Client();
+		this.client = new Discord.Client();
 	}
 
 	/**
@@ -32,11 +32,11 @@ class DiscordCommand{
 	 * -
 	 */
 	init(){
-		this.bot.once('ready', () => {
+		this.client.once('ready', () => {
 			this.ready();
 		});
 
-		this.bot.on('message', async message => {
+		this.client.on('message', async message => {
 			if(message.author.bot && !this.readBots){
 				return;
 			}
@@ -45,7 +45,7 @@ class DiscordCommand{
 
 			for(let command of this.commands){				
 				if(this.checkCommand(message.content, command.name)){
-					('method' in command)? new command.class(message)[command.method]() : new command.class(message).run();
+					('method' in command)? new command.class(message, this.client)[command.method]() : new command.class(message, this.client).run();
 					return;
 					break;
 				}
@@ -58,7 +58,7 @@ class DiscordCommand{
 			}
 		});
 
-		this.bot.login(this.token);
+		this.client.login(this.token);
 	}
 
 	/**
