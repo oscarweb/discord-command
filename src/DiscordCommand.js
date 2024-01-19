@@ -31,10 +31,14 @@ class DiscordCommand{
 	 * Initialize Discord - discord.js
 	 * -
 	 */
-	init(){
+	init(initClass){
 		this.client.once('ready', () => {
 			this.ready();
 		});
+
+		if(typeof initClass !== 'undefined'){
+			new initClass(this.client);
+		}
 
 		this.client.on('message', async message => {
 			if(message.author.bot && !this.readBots){
