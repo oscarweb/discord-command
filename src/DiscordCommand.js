@@ -12,7 +12,6 @@ class DiscordCommand{
 	commands = [];
 	observers = [];
 	client = null;
-	readBots = false;
 
 	/**
 	 * DiscordCommand Construct
@@ -41,24 +40,58 @@ class DiscordCommand{
 		}
 
 		this.client.on('message', async message => {
-			if(message.author.bot && !this.readBots){
-				return;
-			}
-
-			this.log(message);
-
-			for(let command of this.commands){				
+			//- recorremos comandos
+			for(let command of this.commands){
+				//- si existe un comando
 				if(this.checkCommand(message.content, command.name)){
-					('method' in command)? new command.class(message, this.client)[command.method]() : new command.class(message, this.client).run();
+					let setBotOn = false;
+
+					//- si bot está definido, guarda el valor
+					if('bot' in command){
+						setBotOn = command.bot;
+					}
+
+					//- si es un bot y bot está en false cortamos
+					if(this.isBot(message) && !setBotOn){
+						return;
+						break;
+					}
+
+					//- si existe el método dentro de la Class
+					if('method' in command){
+						new command.class(message, this.client)[command.method]();
+					}
+					//- si no existe el método ejecutamos el default
+					else{
+						new command.class(message, this.client).run();
+					}
+
 					return;
 					break;
 				}
 			}
 
+			//- recorremos observadores
 			for(let observer of this.observers){
+				//- si es un canal dentro del observador
 				if(observer.channel.replace('#', '') == message.channel.name){
-					new observer.class(message).run();
+					let setBotOn = false;
+
+					//- si bot está definido, guarda el valor
+					if('bot' in observer){
+						setBotOn = observer.bot;
+					}
+
+					//- si no es un bot ejecutamos el método por default y si es un bot tiene que estar habilitado
+					if(!this.isBot(message) || (this.isBot(message && setBotOn))){
+						new observer.class(message).run();
+					}
 				}
+			}
+
+			//- mostramos mensaje en consola si no es un bot
+			if(!this.isBot(message)){
+				this.log(message);
 			}
 		});
 
@@ -66,11 +99,12 @@ class DiscordCommand{
 	}
 
 	/**
-	 * Set read bots
+	 * Check is bot
 	 * -
+	 * @return {Bolean}
 	 */
-	readBots(){
-		this.readBots = true;
+	isBot(message){
+		return message.author.bot;
 	}
 
 	/**
