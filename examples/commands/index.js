@@ -8,7 +8,8 @@ const Commands = [
 	{
 		name: '!hi|!hello',
 		class: MyCommand,
-		method : 'hi'
+		method : 'hi',
+		bot: true //- habilita lectura de mensajes enviados por un bot. Por defecto es false.
 	}
 ];
 
