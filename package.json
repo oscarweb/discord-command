@@ -1,6 +1,6 @@
 {
   "name": "@oscarweb/discord-command",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Simply add your custom commands to your Discord Bot.",
   "main": "src/index.js",
   "type": "module",
