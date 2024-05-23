@@ -35,12 +35,13 @@ import MyCommand from './MyCommand.js';
 const Commands = [
 	{
 		name: '!test',
-		class: MyCommand,
+		class: MyCommand
 	},
 	{
 		name: '!hi',
 		class: MyCommand,
-		method : 'hi'
+		method: 'hi',
+		bot: true // Enable reading for bots. Default: false
 	}
 ];
 
