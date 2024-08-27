@@ -83,7 +83,7 @@ class DiscordCommand{
 					}
 
 					//- si no es un bot ejecutamos el método por default y si es un bot tiene que estar habilitado
-					if(!this.isBot(message) || (this.isBot(message && setBotOn))){
+					if(!this.isBot(message) || (this.isBot(message) && setBotOn)){
 						new observer.class(message).run();
 					}
 				}
