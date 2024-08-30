@@ -8,17 +8,21 @@ const pkg = require('../package.json');
  * -
  */
 class DiscordCommand{
+	token = null;
+	commands = [];
+	observers = [];
+	client = null;
+
 	/**
 	 * DiscordCommand Construct
 	 * -
-	 * @params { Object } options
+	 * @param {token} string
 	 */
-	constructor(options){
-		this.token = options?.token || null;
-		this.commands = options?.commands || [];
-		this.observers = options?.observers || [];
-		this.tasks = options?.tasks || [];
-		this.log = options?.log || true;
+	constructor(token, commands, observers){
+		this.token = (typeof token === 'undefined')? null : token;
+		this.commands = (typeof commands === 'undefined')? [] : commands;
+		this.observers = (typeof observers === 'undefined')? [] : observers;
+		
 		this.client = new Discord.Client();
 	}
 
