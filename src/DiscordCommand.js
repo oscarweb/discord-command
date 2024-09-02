@@ -18,7 +18,7 @@ class DiscordCommand{
 		this.commands = options?.commands || [];
 		this.observers = options?.observers || [];
 		this.tasks = options?.tasks || [];
-		this.log = options?.log || true;
+		this.logConsole = options?.log || true;
 		this.client = new Discord.Client();
 	}
 
@@ -159,8 +159,18 @@ class DiscordCommand{
 	 * -
 	 */
 	log(message){
-		let date = new Date;
-		console.log(((message.channel.type == 'dm')? '\x1b[90m[ • ]': '\x1b[90m[ # ]')+' '+date.toLocaleString('es-ES')+'\x1b[0m \x1b[32m<'+message.author.username+'>\x1b[0m: '+message.content);
+		if(this.logConsole){
+			let date = new Date;
+			let prefix = '\x1b[90m[ # ]';
+			let author = '\x1b[32m<'+message.author.username+'>\x1b[0m:';
+
+			if(message.channel.type == 'dm'){
+				prefix = '\x1b[90m[ • ]';
+				author = '\x1b[36m<'+message.author.username+'>\x1b[0m:';
+			}
+
+			console.log(prefix+' '+date.toLocaleString('es-ES')+'\x1b[0m '+author+' '+message.content);
+		}
 	}
 }
 
