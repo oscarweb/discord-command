@@ -8,15 +8,10 @@ const pkg = require('../package.json');
  * -
  */
 class DiscordCommand{
-	token = null;
-	commands = [];
-	observers = [];
-	client = null;
-
 	/**
 	 * DiscordCommand Construct
 	 * -
-	 * @param {token} string
+	 * @params { Object } options
 	 */
 	constructor(options){
 		this.token = options?.token || null;
@@ -35,7 +30,7 @@ class DiscordCommand{
 		this.client.once('ready', () => {
 			this.ready();
 		});
-
+		
 		if(typeof initClass !== 'undefined'){
 			new initClass(this.client);
 		}
