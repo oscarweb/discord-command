@@ -62,6 +62,7 @@ class DiscordCommand{
 						new command.class(message, this.client).run();
 					}
 
+					this.log(message);
 					return;
 					break;
 				}
@@ -85,10 +86,7 @@ class DiscordCommand{
 				}
 			}
 
-			//- mostramos mensaje en consola si no es un bot
-			if(!this.isBot(message)){
-				this.log(message);
-			}
+			this.log(message);
 		});
 
 		this.client.login(this.token);
@@ -111,32 +109,27 @@ class DiscordCommand{
 	 * @returns {Bolean}
 	 */
 	checkCommand(content, command){
+		if(!content.startsWith('!')){
+			return false;
+		}
+
+		let text = content.split(' ')[0];
+		
 		if(command.indexOf('|') > 0){
 			for(let name of command.split('|')){
-				if(this.checkStartsWith(content, name)){
+				if(text === name){
 					return true;
 					break;
 				}
 			}
 		}
 		else{
-			if(this.checkStartsWith(content, command)){
+			if(text === command){
 				return true;
 			}
 		}
 
 		return false;
-	}
-
-	/**
-	 * Check if starts with command
-	 * -
-	 * @params {String} content
-	 * @params {String} command
-	 * @returns {Bolean}
-	 */
-	checkStartsWith(content, command){
-		return content.startsWith(command);
 	}
 
 	/**
@@ -159,17 +152,23 @@ class DiscordCommand{
 	 * -
 	 */
 	log(message){
+		// si es un bot cortamos
+		if(this.isBot(message)){
+			return;
+		}
+		
 		if(this.logConsole){
 			let date = new Date;
-			let prefix = '\x1b[90m[ # ]';
+			let prefix = '\x1b[90m[#'+message.channel.name+']';
 			let author = '\x1b[32m<'+message.author.username+'>\x1b[0m:';
 
 			if(message.channel.type == 'dm'){
-				prefix = '\x1b[90m[ • ]';
+				prefix = '\x1b[90m[DM]';
 				author = '\x1b[36m<'+message.author.username+'>\x1b[0m:';
 			}
 
 			console.log(prefix+' '+date.toLocaleString('es-ES')+'\x1b[0m '+author+' '+message.content);
+			//console.log('\x1b[90m'+('-'.repeat(process.stdout.columns))+'\x1b[0m');
 		}
 	}
 }
