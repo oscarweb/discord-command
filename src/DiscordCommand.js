@@ -26,14 +26,10 @@ class DiscordCommand{
 	 * Initialize Discord - discord.js
 	 * -
 	 */
-	init(initClass){
+	init(){
 		this.client.once('ready', () => {
 			this.ready();
 		});
-
-		if(typeof initClass !== 'undefined'){
-			new initClass(this.client);
-		}
 
 		this.client.on('message', async message => {
 			//- recorremos comandos
