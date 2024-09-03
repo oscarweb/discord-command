@@ -8,10 +8,15 @@ const pkg = require('../package.json');
  * -
  */
 class DiscordCommand{
+	token = null;
+	commands = [];
+	observers = [];
+	client = null;
+
 	/**
 	 * DiscordCommand Construct
 	 * -
-	 * @params { Object } options
+	 * @param {token} string
 	 */
 	constructor(options){
 		this.token = options?.token || null;
