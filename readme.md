@@ -24,16 +24,7 @@ import { DiscordCommand } from '@oscarweb/discord-command';
 // Custom Commands
 import Commands from './custom-commands/index.js';
 
-// Options
-const options = {
-    token: '...TOKEN.DISCORD...',
-    commands: Commands,
-    // observers: [],
-    // tasks: [],
-    // log: true
-};
-
-new DiscordCommand(options).init();
+new DiscordCommand('...TOKEN.DISCORD...', Commands).init();
 ```
 Add your custom commands.
 ```js
