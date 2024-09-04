@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import { Client, GatewayIntentBits, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, InteractionType } from 'discord.js';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
@@ -19,23 +19,26 @@ class DiscordCommand{
 		this.observers = options?.observers || [];
 		this.tasks = options?.tasks || [];
 		this.logConsole = options?.log || true;
-		this.client = new Discord.Client();
+		this.client = new Client({
+			intents : [
+				GatewayIntentBits.Guilds,
+				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.MessageContent,
+				GatewayIntentBits.GuildMessageReactions,
+			]
+		});
 	}
 
 	/**
 	 * Initialize Discord - discord.js
 	 * -
 	 */
-	init(initClass){
+	init(){
 		this.client.once('ready', () => {
 			this.ready();
 		});
-		
-		if(typeof initClass !== 'undefined'){
-			new initClass(this.client);
-		}
 
-		this.client.on('message', async message => {
+		this.client.on('messageCreate', async message => {
 			//- recorremos comandos
 			for(let command of this.commands){
 				//- si existe un comando
