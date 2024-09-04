@@ -19,9 +19,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oscarweb/discord-command.git"
-  },    
-  "dependencies": {
-    "discord.js": "^11.4.2"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "discord.js": "^14.16.1"
+  }
 }
