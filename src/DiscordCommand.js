@@ -39,55 +39,11 @@ class DiscordCommand{
 		});
 
 		this.client.on('messageCreate', async message => {
-			//- recorremos comandos
-			for(let command of this.commands){
-				//- si existe un comando
-				if(this.checkCommand(message.content, command.name)){
-					let setBotOn = false;
+			//- check commands
+			this.checkCommand(message);
 
-					//- si bot está definido, guarda el valor
-					if('bot' in command){
-						setBotOn = command.bot;
-					}
-
-					//- si es un bot y bot está en false cortamos
-					if(this.isBot(message) && !setBotOn){
-						return;
-						break;
-					}
-
-					//- si existe el método dentro de la Class
-					if('method' in command){
-						new command.class(message, this.client)[command.method]();
-					}
-					//- si no existe el método ejecutamos el default
-					else{
-						new command.class(message, this.client).run();
-					}
-
-					this.log(message);
-					return;
-					break;
-				}
-			}
-
-			//- recorremos observadores
-			for(let observer of this.observers){
-				//- si es un canal dentro del observador
-				if(observer.channel.replace('#', '') == message.channel.name){
-					let setBotOn = false;
-
-					//- si bot está definido, guarda el valor
-					if('bot' in observer){
-						setBotOn = observer.bot;
-					}
-
-					//- si no es un bot ejecutamos el método por default y si es un bot tiene que estar habilitado
-					if(!this.isBot(message) || (this.isBot(message) && setBotOn)){
-						new observer.class(message).run();
-					}
-				}
-			}
+			//- observers
+			this.checkObservers(message);
 
 			this.log(message);
 		});
@@ -105,13 +61,76 @@ class DiscordCommand{
 	}
 
 	/**
-	 * Check exist command
+	 * Check observer in channel
+	 * -
+	 * @params {Object} message
+	 */
+	checkObservers(message){
+		//- recorremos observadores
+		for(let observer of this.observers){
+			//- si es un canal dentro del observador
+			if(observer.channel.replace('#', '') === message.channel.name){
+				let setBotOn = false;
+
+				//- si bot está definido, guarda el valor
+				if('bot' in observer){
+					setBotOn = observer.bot;
+				}
+
+				//- si no es un bot ejecutamos el método por default y si es un bot tiene que estar habilitado
+				if(!this.isBot(message) || (this.isBot(message) && setBotOn)){
+					new observer.class(message).run();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Check command in message
+	 * -
+	 * @params {Object} message
+	 */
+	checkCommand(message){
+		//- recorremos comandos
+		for(let command of this.commands){
+			//- si existe un comando
+			if(this.isCommand(message.content, command.name)){
+				let setBotOn = false;
+
+				//- si bot está definido, guarda el valor
+				if('bot' in command){
+					setBotOn = command.bot;
+				}
+
+				//- si es un bot y bot está en false cortamos
+				if(this.isBot(message) && !setBotOn){
+					return;
+					break;
+				}
+
+				//- si existe el método dentro de la Class
+				if('method' in command){
+					new command.class(message, this.client)[command.method]();
+				}
+				//- si no existe el método ejecutamos el default
+				else{
+					new command.class(message, this.client).run();
+				}
+
+				return;
+				break;
+			}
+		}		
+	}
+
+	/**
+	 * Check is command
 	 * -
 	 * @params {String} content
 	 * @params {String} command
 	 * @returns {Bolean}
 	 */
-	checkCommand(content, command){
+	isCommand(content, command){
 		if(!content.startsWith('!')){
 			return false;
 		}
