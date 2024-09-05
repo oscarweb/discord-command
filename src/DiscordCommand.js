@@ -25,6 +25,9 @@ class DiscordCommand{
 				GatewayIntentBits.GuildMessages,
 				GatewayIntentBits.MessageContent,
 				GatewayIntentBits.GuildMessageReactions,
+				GatewayIntentBits.DirectMessages,
+				GatewayIntentBits.DirectMessageTyping,
+				GatewayIntentBits.DirectMessageReactions,
 			]
 		});
 	}
