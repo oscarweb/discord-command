@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, InteractionType } from 'discord.js';
+import { Client, GatewayIntentBits, Partials, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, InteractionType } from 'discord.js';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
@@ -23,11 +23,17 @@ class DiscordCommand{
 			intents : [
 				GatewayIntentBits.Guilds,
 				GatewayIntentBits.GuildMessages,
-				GatewayIntentBits.MessageContent,
 				GatewayIntentBits.GuildMessageReactions,
+				GatewayIntentBits.GuildMembers,
+				GatewayIntentBits.MessageContent,
 				GatewayIntentBits.DirectMessages,
 				GatewayIntentBits.DirectMessageTyping,
 				GatewayIntentBits.DirectMessageReactions,
+			],
+			partials: [
+				Partials.Channel,
+				Partials.Message,
+				Partials.Reaction
 			]
 		});
 	}
@@ -187,7 +193,7 @@ class DiscordCommand{
 			let prefix = '\x1b[90m[#'+message.channel.name+']';
 			let author = '\x1b[32m<'+message.author.username+'>\x1b[0m:';
 
-			if(message.channel.type == 'dm'){
+			if(message.channel.type == ChannelType.DM){
 				prefix = '\x1b[90m[DM]';
 				author = '\x1b[36m<'+message.author.username+'>\x1b[0m:';
 			}
