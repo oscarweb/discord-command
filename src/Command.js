@@ -20,23 +20,23 @@ class Command{
 	/**
 	 * Send message with mention
 	 * -
-	 * @param {String} text
+	 * @param {String|Object} msj
+	 * @example "Hi test!"
+	 * @example {content: "Hi test!", embeds: [{...}]}
 	 */
-	reply(text){
-		this.message.reply(text);
+	reply(msj){
+		this.message.reply(msj);
 	}
 
 	/**
 	 * Send message to channel
 	 * -
-	 * @param {String} text
+	 * @param {String|Object} text
+	 * @example "Hi test!"
+	 * @example {content: "Hi test!", split: true, embeds: [{...}]}
 	 */
-	send(text, params){
-		if(typeof params === 'undefined'){
-			params = { split : true };
-		}
-
-		this.message.channel.send(text, params);
+	send(msj){
+		this.message.channel.send(msj);
 	}
 
 	/**
